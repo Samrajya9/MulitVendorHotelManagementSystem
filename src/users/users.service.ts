@@ -1,4 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -22,5 +27,17 @@ export class UsersService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  error() {
+    throw new BadRequestException('this ia an error message', {
+      cause: new Error('Cause Error'),
+      description: 'Some error description',
+    });
+
+    // throw new HttpException('this ia an error message', 400, {
+    //   cause: new Error('Cause Error'),
+    //   description: 'Some error description',
+    // });
   }
 }
