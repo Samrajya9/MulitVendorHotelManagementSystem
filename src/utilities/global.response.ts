@@ -1,6 +1,10 @@
+import { ApiProperty } from '@nestjs/swagger';
+
 export default class GlobalResponse<T> {
   success: boolean;
+
   data: T | null;
+
   error?: {
     message: string;
     description?: string;

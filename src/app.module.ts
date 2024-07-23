@@ -3,16 +3,17 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseConfig } from './config';
-import { UsersModule } from './users/users.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { GlobalInterceptors } from './Interceptors/gobal.interceptors';
+import { HotelsModule } from './hotels/hotels.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
       useFactory: async () => DatabaseConfig(),
     }),
-    UsersModule,
+
+    HotelsModule,
   ],
   controllers: [AppController],
   providers: [
