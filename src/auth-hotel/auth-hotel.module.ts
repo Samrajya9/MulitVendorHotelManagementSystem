@@ -1,22 +1,23 @@
-// Correct the import paths according to your structure
 import { Module } from '@nestjs/common';
-import { AuthHotelService } from './auth_hotel.service';
-import { AuthHotelController } from './auth_hotel.controller';
+import { AuthHotelService } from './auth-hotel.service';
+import { AuthHotelController } from './auth-hotel.controller';
 import { HotelsModule } from 'src/hotels/hotels.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { JwtStrategy } from '../authentication/strategies/jwt.strategy';
+import { LocalStrategy } from './authentication/strategies/local.strategy';
+import { JwtStrategy } from './authentication/strategies/jwt-auth.strategy';
 
 @Module({
   imports: [
     HotelsModule,
     JwtModule.register({
-      secret: 'secret', // Corrected typo 'secert' to 'secret'
+      secret: 'secert',
       signOptions: { expiresIn: '1h' },
     }),
     PassportModule,
   ],
   controllers: [AuthHotelController],
-  providers: [AuthHotelService, JwtStrategy],
+  providers: [AuthHotelService, LocalStrategy, JwtStrategy],
+  exports: [AuthHotelService],
 })
 export class AuthHotelModule {}

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthHotelController } from './auth_hotel.controller';
-import { AuthHotelService } from './auth_hotel.service';
+import { AuthHotelController } from './auth-hotel.controller';
+import { AuthHotelService } from './auth-hotel.service';
 
 describe('AuthHotelController', () => {
   let controller: AuthHotelController;

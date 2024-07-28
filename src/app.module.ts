@@ -6,16 +6,14 @@ import { DatabaseConfig } from './config';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { GlobalInterceptors } from './Interceptors/gobal.interceptors';
 import { HotelsModule } from './hotels/hotels.module';
-import { AuthHotelModule } from './auth_hotel/auth_hotel.module';
+import { AuthHotelModule } from './auth-hotel/auth-hotel.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
       useFactory: async () => DatabaseConfig(),
     }),
-
     HotelsModule,
-
     AuthHotelModule,
   ],
   controllers: [AppController],

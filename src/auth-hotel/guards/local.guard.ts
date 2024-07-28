@@ -3,14 +3,11 @@ import { AuthGuard } from '@nestjs/passport';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class JwtGuard extends AuthGuard('jwt') {
+export class LocalAuthGuard extends AuthGuard('local') {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const request = context.switchToHttp().getRequest();
-    console.log(
-      `JWT Guard Activated. Request Headers: ${JSON.stringify(request.headers)}`,
-    );
+    console.log(`guards`);
     return super.canActivate(context);
   }
 }

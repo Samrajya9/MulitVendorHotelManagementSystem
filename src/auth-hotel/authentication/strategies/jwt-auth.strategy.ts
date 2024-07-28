@@ -8,7 +8,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: 'secret', // Ensure the secret key is correct
+      secretOrKey: 'secert', // Ensure the secret key is correct
     });
   }
 
@@ -17,6 +17,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     if (!payload) {
       throw new UnauthorizedException();
     }
-    return { userId: payload.id, email: payload.email };
+    return { hotel: { id: payload.id, email: payload.email } };
   }
 }
