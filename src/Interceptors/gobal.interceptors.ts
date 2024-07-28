@@ -15,8 +15,11 @@ export class GlobalInterceptors implements NestInterceptor {
     context: ExecutionContext,
     next: CallHandler<any>,
   ): Observable<any> | Promise<Observable<any>> {
+    console.log(`gobal interceptor request`);
+
     return next.handle().pipe(
       map((data): GlobalResponse<any> => {
+        console.log(`gobal interceptor response`);
         return GlobalResponse.success(data);
       }),
       catchError((error) => {

@@ -7,24 +7,20 @@ import {
   Param,
   Delete,
   Global,
+  UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { HotelsService } from './hotels.service';
 import { CreateHotelDto } from './dto/create-hotel.dto';
-import {
-  ApiCreatedResponse,
-  ApiNotFoundResponse,
-  ApiResponse,
-  ApiTags,
-  ApiUnauthorizedResponse,
-} from '@nestjs/swagger';
-import { Hotels } from './entities/hotel.entity';
-import GlobalResponse from 'src/utilities/global.response';
-import { LoginHotelDto } from './dto/login-hotel.dto';
+import { ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SuccessResponse } from 'src/utilities/swagger/swagger.utils.successResponse';
 import { ErrorResponse } from 'src/utilities/swagger/swagger.utils.errorResponse';
+import { HotelInterceptors } from 'src/Interceptors/hotel.interceptors';
+import { JwtGuard } from 'src/guards/jwt-auth.guard';
 
 @ApiTags('Hotels')
 @Controller('hotels')
+@UseInterceptors(HotelInterceptors)
 export class HotelsController {
   constructor(private readonly hotelsService: HotelsService) {}
 
@@ -48,22 +44,9 @@ export class HotelsController {
     const result = await this.hotelsService.create(createHotelDto);
     return result;
   }
-
-  @Post('login')
-  @ApiUnauthorizedResponse({
-    description: 'Unauthorized',
-    type: ErrorResponse,
-  })
-  @ApiNotFoundResponse({
-    description: 'User that email not found',
-    type: ErrorResponse,
-  })
-  @ApiResponse({
-    status: 200,
-    description: `Logged in Successfull`,
-    type: SuccessResponse,
-  })
-  async login(@Body() loginHotelDto: LoginHotelDto) {
-    return await this.hotelsService.hotelogin(loginHotelDto);
+  @Get('hi')
+  @UseGuards(JwtGuard)
+  async hi() {
+    return `hi`;
   }
 }

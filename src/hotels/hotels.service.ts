@@ -4,62 +4,66 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { CreateHotelDto } from './dto/create-hotel.dto';
-import { UpdateHotelDto } from './dto/update-hotel.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Hotels } from './entities/hotel.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { plainToInstance } from 'class-transformer';
+import { JwtService } from '@nestjs/jwt';
+import { LoginHotelDto } from './dto/login-hotel.dto';
 
 @Injectable()
 export class HotelsService {
   constructor(
     @InjectRepository(Hotels) private hotelsRepo: Repository<Hotels>,
+    private jwtService: JwtService,
   ) {}
+
   async create(createHotelDto: CreateHotelDto): Promise<Hotels> {
     const hotel = await this.getHotelByEmail(createHotelDto.email);
     if (hotel != null) {
       throw new NotFoundException(
-        `User found with that email. Please use different email`,
+        `User found with that email. Please use a different email`,
         {
-          cause: `user found with email in databse`,
-          description: `user with email ${createHotelDto.email} alreday exist`,
+          cause: `User found with email in database`,
+          description: `User with email ${createHotelDto.email} already exists`,
         },
       );
     } else {
       const salt = await bcrypt.genSalt();
       const password = await bcrypt.hash(createHotelDto.password, salt);
-      const newHotel = new Hotels();
-      newHotel.email = createHotelDto.email;
-      newHotel.name = createHotelDto.name;
-      newHotel.address = createHotelDto.address;
+      const newHotel = plainToInstance(Hotels, createHotelDto);
       newHotel.password = password;
       return this.hotelsRepo.save(newHotel);
     }
   }
 
-  async getHotelByEmail(email: string): Promise<Hotels | undefined> {
+  private async getHotelByEmail(email: string): Promise<Hotels | undefined> {
     return this.hotelsRepo.findOne({ where: { email } });
   }
 
-  async hotelogin(updateHotelDto: UpdateHotelDto) {
-    const hotel = await this.getHotelByEmail(updateHotelDto.email);
+  private async createJWT(payload: {}): Promise<string> {
+    return await this.jwtService.sign(payload);
+  }
+
+  async validateHotel(loginHotelDto: LoginHotelDto): Promise<Hotels> {
+    const hotel = await this.getHotelByEmail(loginHotelDto.email);
     if (hotel == null) {
       throw new NotFoundException(`User not found with that email`, {
-        cause: `no user found with email in databse`,
-        description: `user with email ${updateHotelDto.email} not found`,
+        cause: `No user found with email in database`,
+        description: `User with email ${loginHotelDto.email} not found`,
       });
     }
     const comparePassword = await bcrypt.compare(
-      updateHotelDto.password,
+      loginHotelDto.password,
       hotel.password,
     );
     if (!comparePassword) {
-      throw new UnauthorizedException(`Unauthorized `, {
+      throw new UnauthorizedException(`Unauthorized`, {
         cause: ``,
-        description: `Paswword didnot match`,
+        description: `Password did not match`,
       });
-    } else {
-      return hotel;
     }
+    return hotel;
   }
 }

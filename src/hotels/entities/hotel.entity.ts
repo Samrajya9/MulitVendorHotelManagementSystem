@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/utilities/entity-utils';
 import { Column, Entity } from 'typeorm';
 
@@ -8,6 +9,7 @@ export class Hotels extends BaseEntity {
   email: string;
 
   @Column()
+  @Exclude()
   password: string;
 
   @Column()
