@@ -26,7 +26,7 @@ export class AuthHotelController {
       secure: true, // Use 'true' if you're using HTTPS
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
     });
-    return res.send({ accessToken });
+    res.json({ success: true, data: { accessToken } });
   }
 
   @Post('signup')
