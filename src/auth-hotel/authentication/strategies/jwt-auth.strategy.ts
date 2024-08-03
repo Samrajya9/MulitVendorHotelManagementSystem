@@ -13,10 +13,10 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(payload: any) {
-    console.log(`JWT Guard Payload: ${JSON.stringify(payload)}`);
+    console.log(payload);
     if (!payload) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('jwt stratgey is invoke');
     }
-    return { hotel: { id: payload.id, email: payload.email } };
+    return {   id: payload.id, email: payload.email  };
   }
 }

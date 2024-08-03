@@ -11,14 +11,11 @@ export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
   }
   async validate(email: string, password: string) {
     console.log(`local strategy`);
-
     const authLoginHotelDto: AuthLoginHotelDto = { email, password };
-
     const hotel = await this.authHotelService.validateHotel(authLoginHotelDto);
     if (!hotel) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('local Strategy is invoke');
     }
-
     return hotel;
   }
 }

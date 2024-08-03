@@ -1,4 +1,6 @@
 import {
+  BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -10,6 +12,7 @@ import { plainToInstance } from 'class-transformer';
 import { Hotels } from 'src/hotels/entities/hotel.entity';
 import { JwtService } from '@nestjs/jwt';
 import { CreateHotelDto } from 'src/hotels/dto/create-hotel.dto';
+import { Request, Response } from 'express';
 
 @Injectable()
 export class AuthHotelService {
@@ -25,6 +28,14 @@ export class AuthHotelService {
   }
 
   async signup(createHotelDto: CreateHotelDto) {
+    const oldhotel = await this.hotelService.getHotelByEmail(
+      createHotelDto.email,
+    );
+    if (oldhotel != null) {
+      throw new ConflictException(
+        `User found with email ${createHotelDto.email}. Please use a different email.`,
+      );
+    }
     const hashedPassword = await this.hashPassword(createHotelDto.password);
     createHotelDto.password = hashedPassword;
     const newHotel = await this.hotelService.create(createHotelDto);
@@ -37,12 +48,10 @@ export class AuthHotelService {
       authLoginHotelDto.email,
     );
     if (hotel == null) {
-      if (hotel == null) {
-        throw new NotFoundException(`User not found with that email`, {
-          cause: `No user found with email in database`,
-          description: `User with email ${authLoginHotelDto.email} not found`,
-        });
-      }
+      throw new NotFoundException(`User not found with that email`, {
+        cause: `No user found with email in database`,
+        description: `User with email ${authLoginHotelDto.email} not found`,
+      });
     }
     const comparePassword = await bcrypt.compare(
       authLoginHotelDto.password,
@@ -66,12 +75,23 @@ export class AuthHotelService {
       : this.jwtService.sign(payload);
   }
 
-  async login(payload: {}) {
+  async login(res: Response, payload: {}) {
     const accessToken = await this.createJwtToken(payload);
     const refreshToken = await this.createJwtToken(payload, {
       expiresIn: '7d',
     });
-
-    return { accessToken, refreshToken };
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: true, // Use 'true' if you're using HTTPS
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
+    });
+    return { success: true, data: { accessToken } };
+  }
+async isloggedIn(req: Request){
+  return req.cookies;
+}
+  async signout(req: Request, res: Response) {
+    res.clearCookie('refreshToken');
+    return { success: true, data: 'sign out' };
   }
 }

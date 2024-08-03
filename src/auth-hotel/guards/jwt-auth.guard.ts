@@ -8,9 +8,6 @@ export class JwtGuard extends AuthGuard('jwt') {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
-    // console.log(
-    //   `JWT Guard Activated. Request Headers: ${JSON.stringify(request.headers)}`,
-    // );
     return super.canActivate(context);
   }
 }

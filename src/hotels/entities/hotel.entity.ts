@@ -1,6 +1,7 @@
 import { Exclude } from 'class-transformer';
+import { HotelEmployees } from 'src/hotel-employees/entities/hotel-employee.entity';
 import { BaseEntity } from 'src/utilities/entity-utils';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 
 @Entity({ name: 'Hotels' })
 export class Hotels extends BaseEntity {
@@ -16,4 +17,7 @@ export class Hotels extends BaseEntity {
 
   @Column()
   address: string;
+  
+  @OneToMany(() => HotelEmployees, employee => employee.hotel)
+  employees: HotelEmployees[];
 }
