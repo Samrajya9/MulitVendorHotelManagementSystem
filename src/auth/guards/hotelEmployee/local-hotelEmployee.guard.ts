@@ -3,9 +3,9 @@ import { AuthGuard } from "@nestjs/passport";
 import { Observable } from "rxjs";
 
 @Injectable()
-export class LocalHotelAuthGaurd extends AuthGuard('localHotel'){
+export class LocalHotelEmployeeGuard extends AuthGuard('localHotelEmployeeStrategy'){
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
-        console.log('local Hotel Auth gaurd');
+        console.log(`Local HotelEmployee Guard Activated`);
         return super.canActivate(context);
         
     }

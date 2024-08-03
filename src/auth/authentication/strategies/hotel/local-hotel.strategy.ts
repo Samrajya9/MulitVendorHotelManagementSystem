@@ -5,13 +5,13 @@ import { AuthService } from "src/auth/auth.service";
 import { HotelLoginDTO } from "src/auth/dto/hotel-login.dto";
 
 @Injectable()
-export class LocalHotelStrategy extends PassportStrategy(Strategy,'localHotel'){
+export class LocalHotelStrategy extends PassportStrategy(Strategy,'localHotelStrategy'){
     constructor(private authService:AuthService){
         super({ usernameField: 'email', passwordField: 'password' })
     }
     async validate(email: string, password: string){
         try {
-            console.log(`local Hotel strategy`);
+            console.log(`local Hotel strategy activated`);
             const hotelLoginDTO:HotelLoginDTO = {email,password};
             const hotel = await this.authService.validateHotel(hotelLoginDTO);
             return hotel;

@@ -3,5 +3,4 @@ export class CreateHotelEmployeeDto {
     email: string;
     password: string;
     join_date: Date;
-
 }

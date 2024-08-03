@@ -19,20 +19,20 @@ export class AuthService {
         private jwtService: JwtService,
      ){}
 
-     private async hashPassword(password: string): Promise<string> {
+    private async hashPassword(password: string): Promise<string> {
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(password, salt);
         return hashedPassword;
-      }
+    }
 
-      private async createJwtToken<T extends object>(
+    private async createJwtToken<T extends object>(
         payload: T,
         options?: { expiresIn?: string | number },
       ): Promise<string> {
         return options
           ? this.jwtService.sign(payload, options)
           : this.jwtService.sign(payload);
-      }
+    }
     async HotelSignUp(createHotelDto:CreateHotelDto){
         const hotel = await this.hotelService.getHotelByEmail(createHotelDto.email);
         if(hotel!=null){
@@ -82,22 +82,22 @@ export class AuthService {
         }
         const hotel_details =plainToInstance(Hotels, hotel)
         return hotel_details;
-      }
-
-      async validateHotelEmployee(loginDto:HotelEmployeeLoginDTO){
+    }
+    async validateHotelEmployee(loginDto:HotelEmployeeLoginDTO){
         const employee = await  this.hotelEmployeeServie.getEmployeesByEmail(loginDto.email)
+        console.log(employee);
+        
         if(employee == null){
           throw new NotFoundException("User doesnt exist")
         }
-        const passwordMatch = bcrypt.compare(loginDto.password,employee.password)
+        const passwordMatch =await bcrypt.compare(loginDto.password,employee.password)        
         if(!passwordMatch){
-          throw new UnauthorizedException("Password didn't match")
+          throw new UnauthorizedException("Password didn't match",{description:"Password didn't match"})
         }
         const employee_details = plainToInstance(HotelEmployees,employee)
         return employee_details;
-      }
-
-      async HotelLogin(res: Response, payload: {}){
+    }
+    async HotelLogin(res: Response, payload: {}){
         const accessToken = await this.createJwtToken(payload);
         const refreshToken = await this.createJwtToken(payload, {
             expiresIn: '7d',
@@ -109,7 +109,6 @@ export class AuthService {
       });
       return { success: true, data: { accessToken } };
     }
-
     async HotelEmployeeLgin(res: Response, payload: {}){
         const accessToken = await this.createJwtToken(payload);
         const refreshToken = await this.createJwtToken(payload, {
@@ -123,12 +122,8 @@ export class AuthService {
       return { success: true, data: { accessToken } };
 
     }
-      async isloggedIn(req: Request){
-        return req.cookies;
-      }
-
-      async signout(res: Response) {
+    async signout(res: Response) {
         res.clearCookie('refreshToken');
         return {success: true,data:'sign out'};
-      }
+    }
 }

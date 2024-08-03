@@ -5,6 +5,10 @@ import { HotelsModule } from 'src/hotels/hotels.module';
 import { HotelEmployeesModule } from 'src/hotel-employees/hotel-employees.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { LocalHotelStrategy } from './authentication/strategies/hotel/local-hotel.strategy';
+import { JwtHotelStrategy } from './authentication/strategies/hotel/jwt-hotel.strategy';
+import { isloggedInHotelGuard } from './guards/hotel/isLoggedIn-hotel.guard';
+import { LocaHotelEmployeeStrategy } from './authentication/strategies/hotelEmployee/local-hotelEmployee.strategy';
 
 @Module({
   imports:[HotelsModule,HotelEmployeesModule,
@@ -14,7 +18,7 @@ import { PassportModule } from '@nestjs/passport';
     }),PassportModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService,LocalHotelStrategy,JwtHotelStrategy,isloggedInHotelGuard,LocaHotelEmployeeStrategy],
   exports:[AuthService]
 })
 export class AuthModule {}

@@ -6,9 +6,7 @@ import { DatabaseConfig } from './config';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { GlobalInterceptors } from './Interceptors/gobal.interceptors';
 import { HotelsModule } from './hotels/hotels.module';
-import { AuthHotelModule } from './auth-hotel/auth-hotel.module';
 import { HotelEmployeesModule } from './hotel-employees/hotel-employees.module';
-import { AuthHotelEmployeesModule } from './auth-hotel-employees/auth-hotel-employees.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
@@ -17,9 +15,7 @@ import { AuthModule } from './auth/auth.module';
       useFactory: async () => DatabaseConfig(),
     }),
     HotelsModule,
-    AuthHotelModule,
     HotelEmployeesModule,
-    AuthHotelEmployeesModule,
     AuthModule,
   ],
   controllers: [AppController],

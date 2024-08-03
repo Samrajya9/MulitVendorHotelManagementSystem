@@ -17,8 +17,6 @@ import { ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SuccessResponse } from 'src/utilities/swagger/swagger.utils.successResponse';
 import { ErrorResponse } from 'src/utilities/swagger/swagger.utils.errorResponse';
 import { HotelInterceptors } from 'src/Interceptors/hotel.interceptors';
-import { JwtGuard } from 'src/auth-hotel/guards/jwt-auth.guard';
-import { Request } from 'express';
 
 @ApiTags('Hotels')
 @Controller('hotels')
@@ -46,11 +44,5 @@ export class HotelsController {
     const result = await this.hotelsService.create(createHotelDto);
     return result;
   }
-  @Get('hi')
-  @UseGuards(JwtGuard)
-  async hi(@Req() req: Request) {
-    console.log(req.user);
 
-    return `hi`;
-  }
 }
