@@ -1,3 +1,5 @@
 import { CommonLoginDTO } from "src/utilities/dto/login.dto";
 
-export class HotelEmployeeLoginDTO extends CommonLoginDTO{};
+export class HotelEmployeeLoginDTO extends CommonLoginDTO{
+  
+};

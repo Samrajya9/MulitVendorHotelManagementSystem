@@ -20,6 +20,14 @@ async create(createHotelEmployeeDto: CreateHotelEmployeeDto):Promise<HotelEmploy
 async getEmployeesByEmail(email:string):Promise<HotelEmployees | null>{
   return await this.HotelEmployeeRepo.findOne({where:{email}})
 }
+async getEmployeesByEmailandHotelId(email: string, hotel_id: number): Promise<HotelEmployees[]> {
+  return this.HotelEmployeeRepo.find({
+    where: {
+      email: email,
+      hotel_id: hotel_id,
+    },
+  });
+}
   findAll() {
     return `This action returns all hotelEmployees`;
   }

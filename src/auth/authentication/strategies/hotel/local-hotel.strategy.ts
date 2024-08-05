@@ -12,6 +12,7 @@ export class LocalHotelStrategy extends PassportStrategy(Strategy,'localHotelStr
     async validate(email: string, password: string){
         try {
             console.log(`local Hotel strategy activated`);
+            
             const hotelLoginDTO:HotelLoginDTO = {email,password};
             const hotel = await this.authService.validateHotel(hotelLoginDTO);
             return hotel;

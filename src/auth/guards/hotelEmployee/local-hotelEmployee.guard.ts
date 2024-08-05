@@ -6,7 +6,9 @@ import { Observable } from "rxjs";
 export class LocalHotelEmployeeGuard extends AuthGuard('localHotelEmployeeStrategy'){
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
         console.log(`Local HotelEmployee Guard Activated`);
+        const request = context.switchToHttp().getRequest()
+        // const hotel_id = request.        
         return super.canActivate(context);
         
     }
-}
+}   

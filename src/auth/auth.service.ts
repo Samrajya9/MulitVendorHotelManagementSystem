@@ -49,8 +49,9 @@ export class AuthService {
     }
     async HotelEmployeeSignUp(createHotelEmployeeDto:CreateHotelEmployeeDto){
         const employee = await this.hotelEmployeeServie.getEmployeesByEmail(createHotelEmployeeDto.email);
-        if(employee != null){
-            throw new ConflictException("Employee with the email alreday exist")
+        console.log(employee);  
+        if(employee !=null){
+            throw new ConflictException("user with the email alreday exist")
           }
           createHotelEmployeeDto.password =await this.hashPassword(createHotelEmployeeDto.password);
           if(createHotelEmployeeDto.join_date == null){
@@ -85,8 +86,6 @@ export class AuthService {
     }
     async validateHotelEmployee(loginDto:HotelEmployeeLoginDTO){
         const employee = await  this.hotelEmployeeServie.getEmployeesByEmail(loginDto.email)
-        console.log(employee);
-        
         if(employee == null){
           throw new NotFoundException("User doesnt exist")
         }
@@ -109,7 +108,7 @@ export class AuthService {
       });
       return { success: true, data: { accessToken } };
     }
-    async HotelEmployeeLgin(res: Response, payload: {}){
+    async HotelEmployeeLogin(res: Response, payload: {}){
         const accessToken = await this.createJwtToken(payload);
         const refreshToken = await this.createJwtToken(payload, {
             expiresIn: '7d',
@@ -119,7 +118,7 @@ export class AuthService {
             secure: true, // Use 'true' if you're using HTTPS
                 maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
       });
-      return { success: true, data: { accessToken } };
+      return { success: true, data: { employee:payload,accessToken } };
 
     }
     async signout(res: Response) {

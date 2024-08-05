@@ -10,6 +10,7 @@ import { JwtHotelGuard } from './guards/hotel/jwt-hotel.guard';
 import { LocalHotelAuthGaurd } from './guards/hotel/local-hotel.guard';
 import { HotelEmployeeLoginDTO } from './dto/hotelEmployee-login.dto';
 import { LocalHotelEmployeeGuard } from './guards/hotelEmployee/local-hotelEmployee.guard';
+import { HotelEmployees } from 'src/hotel-employees/entities/hotel-employee.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -47,7 +48,11 @@ export class AuthController {
   @Post('hotelEmployee/signin')
   @UseGuards(LocalHotelEmployeeGuard)
   async hotelEmployeeSignin(@Req() req: Request,@Res() res: Response,@Body() hotelEmployeeLoginDto :HotelEmployeeLoginDTO){
-    const result = await this.authService.HotelEmployeeLgin(res,hotelEmployeeLoginDto)
+    const employeeInfo= req.user as HotelEmployees
+    const payload = {id:employeeInfo.id,hotel_id:employeeInfo.hotel_id,email:employeeInfo.email,joindate:employeeInfo.join_date}
+    console.log(payload);
+    
+    const result = await this.authService.HotelEmployeeLogin(res,payload)
     res.json(result);
   }
 }
