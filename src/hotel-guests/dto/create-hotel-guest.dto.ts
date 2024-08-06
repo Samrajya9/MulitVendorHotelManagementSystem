@@ -1,5 +1,6 @@
-export class CreatHotelGuestDTO {
-    name:string;
-    address:string;
-    phone:string
+export class CreatHotelGuestDto {
+  name: string;
+  address: string;
+  phone: string;
+  hotel_id: number;
 }
