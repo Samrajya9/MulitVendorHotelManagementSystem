@@ -2,8 +2,7 @@
 /dist
 /node_modules
 /build
-/db/migrations/*
-!/db/migrations/.gitkeep
+
 
 # Logs
 logs
