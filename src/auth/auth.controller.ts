@@ -51,7 +51,6 @@ export class AuthController {
     const employeeInfo= req.user as HotelEmployees
     const payload = {id:employeeInfo.id,hotel_id:employeeInfo.hotel_id,email:employeeInfo.email,joindate:employeeInfo.join_date}
     console.log(payload);
-    
     const result = await this.authService.HotelEmployeeLogin(res,payload)
     res.json(result);
   }

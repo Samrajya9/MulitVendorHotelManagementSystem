@@ -8,6 +8,8 @@ import { GlobalInterceptors } from './Interceptors/gobal.interceptors';
 import { HotelsModule } from './hotels/hotels.module';
 import { HotelEmployeesModule } from './hotel-employees/hotel-employees.module';
 import { AuthModule } from './auth/auth.module';
+import { HotelGuestsModule } from './hotel-guests/hotel-guests.module';
+import { HotelRoomsModule } from './hotel-rooms/hotel-rooms.module';
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { AuthModule } from './auth/auth.module';
     HotelsModule,
     HotelEmployeesModule,
     AuthModule,
+    HotelGuestsModule,
+    HotelRoomsModule,
   ],
   controllers: [AppController],
   providers: [
