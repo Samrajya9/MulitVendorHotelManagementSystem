@@ -57,4 +57,4 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Ignore all files in db/migrations but not the folder itself
 db/migrations/*
-
+!db/migrations
