@@ -1,6 +1,6 @@
-import { Exclude } from 'class-transformer';
 import { HotelEmployees } from 'src/hotel-employees/entities/hotel-employee.entity';
 import { HotelGuests } from 'src/hotel-guests/entities/hotel-guests.entity';
+import { HotelReservation } from 'src/hotel-reservation/entities/hotel-reservation.entity';
 import { HotelRooms } from 'src/hotel-rooms/entities/hotel-room.entity';
 import { BaseEntity } from 'src/utilities/entity-utils';
 import { Column, Entity, OneToMany } from 'typeorm';
@@ -11,7 +11,6 @@ export class Hotels extends BaseEntity {
   email: string;
 
   @Column()
-  @Exclude()
   password: string;
 
   @Column()
@@ -23,9 +22,12 @@ export class Hotels extends BaseEntity {
   @OneToMany(() => HotelEmployees, (employee) => employee.hotel)
   employees: HotelEmployees[];
 
-  @OneToMany(() => HotelRooms, (rooms) => rooms.hotel)
+  @OneToMany(() => HotelRooms, (room) => room.hotel)
   rooms: HotelRooms[];
 
-  @OneToMany(() => HotelGuests, (guests) => guests.hotel)
+  @OneToMany(() => HotelGuests, (guest) => guest.hotel)
   guests: HotelGuests[];
+
+  @OneToMany(() => HotelReservation, (reservation) => reservation.hotel)
+  reservations: HotelReservation[];
 }
