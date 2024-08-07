@@ -17,9 +17,8 @@ import { JwtHotelEmployeeGuard } from 'src/auth/guards/hotelEmployee/jwt-hotelEm
 import { Request } from 'express';
 import { HotelEmployees } from 'src/hotel-employees/entities/hotel-employee.entity';
 import { IsValidHotelEmployeeReq } from 'src/auth/guards/hotelEmployee/isValidHotel-EmployessReq.guard';
-
-@Controller('hotel-rooms')
 @UseGuards(JwtHotelEmployeeGuard, IsValidHotelEmployeeReq)
+@Controller('hotel-rooms')
 export class HotelRoomsController {
   constructor(private readonly hotelRoomsService: HotelRoomsService) {}
 

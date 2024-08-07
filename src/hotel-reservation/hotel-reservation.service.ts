@@ -1,26 +1,68 @@
 import { Injectable } from '@nestjs/common';
 import { CreateHotelReservationDto } from './dto/create-hotel-reservation.dto';
 import { UpdateHotelReservationDto } from './dto/update-hotel-reservation.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { HotelReservation } from './entities/hotel-reservation.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class HotelReservationService {
-  create(createHotelReservationDto: CreateHotelReservationDto) {
-    return 'This action adds a new hotelReservation';
+  constructor(
+    @InjectRepository(HotelReservation)
+    private hotelReservationRepo: Repository<HotelReservation>,
+  ) {}
+  async createReservation(
+    createHotelReservationDto: CreateHotelReservationDto,
+  ) {
+    const reservation = await this.hotelReservationRepo.create(
+      createHotelReservationDto,
+    );
+    const result = await this.hotelReservationRepo.save(reservation);
+    return result;
   }
 
-  findAll() {
-    return `This action returns all hotelReservation`;
+  async findAllReservation(hotel_id: number) {
+    const result = await this.hotelReservationRepo.find({
+      where: {
+        hotel_id,
+      },
+    });
+    return result;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} hotelReservation`;
+  async findOneReservation(hotel_id: number, reservation_id: number) {
+    const result = await this.hotelReservationRepo.findOne({
+      where: { hotel_id, id: reservation_id },
+    });
+    return result;
   }
 
-  update(id: number, updateHotelReservationDto: UpdateHotelReservationDto) {
-    return `This action updates a #${id} hotelReservation`;
+  async updateReservation(
+    hotel_id: number,
+    reservation_id: number,
+    updateHotelReservationDto: UpdateHotelReservationDto,
+  ) {
+    console.log(updateHotelReservationDto);
+    const reservation = await this.hotelReservationRepo.findOne({
+      where: { hotel_id, id: reservation_id },
+    });
+    console.log(reservation);
+
+    const UpdatedHotelReservation = Object.assign(
+      reservation,
+      updateHotelReservationDto,
+    );
+    const result = await this.hotelReservationRepo.save(
+      UpdatedHotelReservation,
+    );
+    return result;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} hotelReservation`;
+  async deleteReservation(hotel_id: number, reservation_id: number) {
+    const result = await this.hotelReservationRepo.delete({
+      hotel_id,
+      id: reservation_id,
+    });
+    return result;
   }
 }
