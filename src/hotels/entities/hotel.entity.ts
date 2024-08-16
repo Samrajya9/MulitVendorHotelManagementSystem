@@ -2,6 +2,7 @@ import { HotelEmployees } from 'src/hotel-employees/entities/hotel-employee.enti
 import { HotelGuests } from 'src/hotel-guests/entities/hotel-guests.entity';
 import { HotelReservation } from 'src/hotel-reservation/entities/hotel-reservation.entity';
 import { HotelRooms } from 'src/hotel-rooms/entities/hotel-room.entity';
+import { HotelTransaction } from 'src/hotel-transactions/entities/hotel-transaction.entity';
 import { BaseEntity } from 'src/utilities/entity-utils';
 import { Column, Entity, OneToMany } from 'typeorm';
 
@@ -30,4 +31,7 @@ export class Hotels extends BaseEntity {
 
   @OneToMany(() => HotelReservation, (reservation) => reservation.hotel)
   reservations: HotelReservation[];
+
+  @OneToMany(() => HotelTransaction, (transaction) => transaction.hotel)
+  transactions: HotelTransaction[];
 }

@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { HotelGuestsModule } from './hotel-guests/hotel-guests.module';
 import { HotelRoomsModule } from './hotel-rooms/hotel-rooms.module';
 import { HotelReservationModule } from './hotel-reservation/hotel-reservation.module';
+import { HotelTransactionsModule } from './hotel-transactions/hotel-transactions.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { HotelReservationModule } from './hotel-reservation/hotel-reservation.mo
     HotelGuestsModule,
     HotelRoomsModule,
     HotelReservationModule,
+    HotelTransactionsModule,
   ],
   controllers: [AppController],
   providers: [
